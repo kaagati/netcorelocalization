@@ -1,0 +1,44 @@
+﻿@using System.Threading
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model DrachmaLocalizationDemo.Controllers.CultureModel;
+    <div class="text-center" style="padding: 4em">
+
+        <div>
+            <p>Current UI Culture: @Thread.CurrentThread.CurrentUICulture.Name</p>
+        </div>
+        <h1 class="display-3">
+            @ViewBag.Grettings
+        </h1>
+        <h1 class="display-3">
+            @Localizer["How are you?"]
+        </h1>
+
+    </div>
+
+<section class="text-center mt-3">
+    <header class="text-muted">Supported Cultures</header>
+    
+        <ul class="list-inline">
+            @foreach (var culture in Model.SupportedUICultures)
+            {
+                <li class="list-inline-item" data-culture="@culture.Name">
+                    <button class="btn btn-primary">@culture.Name</button>
+                </li>
+            }
+        </ul>
+</section>
+
+@section Scripts{
+    <script>
+        $("li").on("click",
+            function () {
+                var culture = $(this).data("culture");
+                window.location = window.location.href.split('?')[0] + `?culture=${culture}`;
+
+            });
+    </script>
+}
